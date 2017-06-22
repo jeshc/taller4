@@ -10,13 +10,15 @@
   </head>
   <body>
     <div class="">
-      login:<input type="text" id="nick" name="" value="" placeholder="Tu nick">
+      Room:<input type="text" id="cuarto" name="" value=""><br>
+      Nick:<input type="text" id="nick" name="" value="" placeholder="Tu nick"><br>
       Mensaje:<input type="text"  id="mensaje" name="" value="" placeholder="tu mensaje">
-      <button type="button" onclick="mandarMensaje()"  name="button">Platicar</button>
+      <button type="button" onclick="mandarMensaje()"  name="button">Conectarse</button>
     </div>
 
     <script type="text/javascript">
     var usuario={
+      "cuarto":"",
       "nick" : "",
       "mensaje" : ""
     }
@@ -37,6 +39,7 @@
     function mandarMensaje(){
       //console.log('en la funcion mandar mensaje :)');
       //chat.emit('mensaje','mensaje del cliente');
+      usuario.cuarto=document.getElementById("cuarto").value;
       usuario.nick=document.getElementById("nick").value;
       usuario.mensaje=document.getElementById("mensaje").value;
       chat.emit('mensaje',usuario);

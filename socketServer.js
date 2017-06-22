@@ -9,7 +9,7 @@ socketServer.on('connect', function(socketClient) {
 
   socketClient.on('mensaje',function(data){
       console.log(data);
-      socketServer.to("cuarto1").emit("chat",data);
+      socketServer.to(data.cuarto).emit("chat",data);
   });
 
 
