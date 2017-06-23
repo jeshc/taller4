@@ -10,40 +10,59 @@
   </head>
   <body>
     <div class="">
+      Nick:<input type="text" id="nick" name="" value="" placeholder="Tu nick" ><br>
       Room:<input type="text" id="cuarto" name="" value=""><br>
-      Nick:<input type="text" id="nick" name="" value="" placeholder="Tu nick"><br>
-      Mensaje:<input type="text"  id="mensaje" name="" value="" placeholder="tu mensaje">
-      <button type="button" onclick="mandarMensaje()"  name="button">Conectarse</button>
+      <button type="button" id="btnUnirse" onclick="unirseAlChat()"  name="button" >Conectarse</button>
+      <hr>
+      Mensaje:<input type="text"  id="mensaje" name="" value="" placeholder="tu mensaje" disabled>
+      <button type="button" id="btnChat" onclick="mandarMensaje()"  name="button" disabled>Send</button>
+
+    </div>
+    <hr>
+    <div class="" id="chatPanel">
+
     </div>
 
     <script type="text/javascript">
     var usuario={
       "cuarto":"",
       "nick" : "",
-      "mensaje" : ""
+      "mensaje" : "",
+      "conectado" : false
     }
     var chat = io.connect('http://localhost:8082');
     chat.on('connect', function () {
-      console.log('conectado');
 
-      chat.on('respServer',function(data){
-        console.log(data);
-      });
       chat.on('chat',function(data){
         console.log(data);
+
+      });
+
+      chat.on('unionExitosa',function(data){
+        usuario=data;
+        usuario.conectado=true;
+        console.log('OK:'+JSON.stringify(usuario));
+        document.getElementById("nick").disabled=true;
+        document.getElementById("btnUnirse").disabled=true;
+        document.getElementById("mensaje").disabled=false;
+        document.getElementById("btnChat").disabled=false;
+
       });
 
 
     });
 
     function mandarMensaje(){
-      //console.log('en la funcion mandar mensaje :)');
-      //chat.emit('mensaje','mensaje del cliente');
-      usuario.cuarto=document.getElementById("cuarto").value;
-      usuario.nick=document.getElementById("nick").value;
       usuario.mensaje=document.getElementById("mensaje").value;
       chat.emit('mensaje',usuario);
     }
+
+    function unirseAlChat(){
+      usuario.nick=document.getElementById("nick").value;
+      usuario.cuarto=document.getElementById("cuarto").value;
+      chat.emit('unirse',usuario);
+    }
+
 
 
     </script>
